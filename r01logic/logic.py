@@ -1,6 +1,15 @@
 #!/usr/bin/python3
 
 import itertools
+#from itertools import chain, combinations
+
+def powerset(iterable):
+  "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+  s = list(iterable)
+  return itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1))
+
+def powersetAsList(l):
+  return list( powerset(l) )
 
 # Representation of propositional formulas in Python.
 #
@@ -59,7 +68,7 @@ class NOT:
   def vars(self):
     return self.subformula.vars()
   def truthValue(self,v):
-    return not str(self.subformula) in v #wrks
+    return not self.subformula.truthValue(v)
 ### IMPLEMENT THIS (~ 1 line)
 
 # ATOM - atomic formulas
@@ -78,7 +87,8 @@ class ATOM:
     # print ('asdfv' + str(v)) #v =list
     # print ( str(self) in v)
     # maybe use vars and some python iteration functions instead of srt(self)
-    return str(self) in v #dis wrks
+    # print(self.vars()) should propably use dis and not str()
+    return all(i in v for i in self.vars()) #dis wrks, no idea should this be all or any but all sees to work
 ### IMPLEMENT THIS (~ 1 line)
 
 # FALSE - the constant that represents the truth-value False
@@ -131,13 +141,32 @@ def EQVI(f1,f2):
 # and it returns the valuation that makes the formula true otherwise.
 
 def satisfiable(f):
-  pass
+  #return passing subset if found one and false if no
+  subsets = powersetAsList(f.vars())
+  for subset in subsets:
+    if f.truthValue(subset):
+      return subset #im 60% sure this should be a list of all the sets
+  return False
 ### IMPLEMENT THIS (10 to 15 lines total)
+
+##IDK what is valuation need to check homework
+def satisfiableAll(f):
+  #return passing subset if found one and false if no
+  subsets = powersetAsList(f.vars())
+  valuation = []
+  for subset in subsets:
+    if f.truthValue(subset):
+      valuation.append(subset) #im 60% sure this should be a list of all the sets
+  if len(valuation):
+    return valuation
+  return False
 
 # Test logical consequence
 # Returns True if f2 is a logical consequence of f1 (that is f1 |= f2)
 # and returns False otherwise.
 
 def logicalConsequence(f1,f2):
-  pass #satisfiable(f1) == satisfiable(f2)
+  # print(satisfiableAll(f1))
+  # print(satisfiableAll(f2))
+  return satisfiable(f1) == satisfiable(f2)
 ### IMPLEMENT THIS (~ 1 line)
