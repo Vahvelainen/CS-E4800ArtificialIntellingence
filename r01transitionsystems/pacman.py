@@ -101,18 +101,56 @@ class PacManState:
     # Based on this information, the possible successor states
     # of (x,y,d) are computed by 'successors'.
 
-    #   successors  
-    #   Returns a list [(a1,s1),...,(aN,sN)] where each si
-    #   is the successor state when action ai is taken.
-    #   Here the name ai of an action is a string.
-
-    #If there is an empty grid cell in the direction of movement, then Pac-Man can move to that cell.
-    # If there is an empty grid cell to the left of the current location
-    # (considering the current direction of movement), then Pac-Man can move to that cell and change the direction of movement 90 degrees to the left.
-    # Turning right is similarly possible.
-    # If no movement forward, left or right is possible, then Pac-Man moves one step backward and turns 180 degrees to the direction it came from.
     def successors(self):
-        pass
+        #assumption 1. packman cannot turn withouth moving, check with the instructions iquess
+        #that would leave only 4 different directions to check
+        possibleMoves = []
+    
+        #Checks directions and appends moves if available
+        self.checkUp(possibleMoves)
+        self.checkDown(possibleMoves)
+        self.checkLeft(possibleMoves)
+        self.checkRight(possibleMoves)
+
+        #print ( possibleMoves )
+        return possibleMoves
+
+    def checkRight(self, moves):
+        #if at the top, cant go up
+        if self.x == self.grid.xmax:
+            return moves
+        #occupied, cannot go
+        if self.grid.occupied(self.x + 1, self.y):
+            return moves
+        moves.append(('Right', PacManState(self.x + 1, self.y, 'E', self.grid)))
+        return moves
+
+    def checkLeft(self, moves):
+        if self.x == 0:
+            return moves
+        if self.grid.occupied(self.x - 1, self.y):
+            return moves
+        moves.append(('Left', PacManState(self.x - 1, self.y, 'W', self.grid)))
+        return moves
+
+
+    def checkDown(self, moves):
+        if self.y == 0:
+            return moves
+        if self.grid.occupied(self.x, self.y - 1):
+            return moves
+        moves.append(('Down', PacManState(self.x, self.y - 1, 'S', self.grid)))
+        return moves
+
+
+    def checkUp(self, moves):
+        if self.y == self.grid.ymax:
+            return moves
+        if self.grid.occupied(self.x, self.y + 1):
+            return moves
+        moves.append(('Up', PacManState(self.x, self.y + 1, 'N', self.grid)))
+        return moves
+
 
 ### Implement this function (mine is 67 lines, w/ 4 aux functions)
 ### You can come up with your own names for the different moves
