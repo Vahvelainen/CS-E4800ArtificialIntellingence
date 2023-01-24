@@ -33,10 +33,13 @@ def astar(start_state, goaltest, h):
     """
     # Dictionary to look up predecessor states and the
     # the actions which took us there. It is empty to start with.
-    predecessor = {} 
+    predecessor = {} #states
+    cameFrom = {} #actionn
+
     # Dictionary holding the (yet) best found distance to a state,
     # the function g(s) in the formula f(s) = h(s) + g(s).
     g = {}
+
     # Priority queue holding states to check, the priority of each state is
     # f(s).
     # Elements are encoded as pairs of (prio, state),
@@ -63,87 +66,59 @@ def astar(start_state, goaltest, h):
     # Good luck!
 
     #successors of a state can be found with state.successors()
-    print(type(start_state.successors())) #list
-    print(type(start_state.successors()[0])) #of tuples
-    print(start_state.successors()[0]) #(Action, MAPPGridState)
-    #    (
-    #    Action(source=((0, 0), (1, 1), (0, 1), (1, 0)), target=((0, 0), (1, 1), (0, 1), (1, 0)), cost=0),
-    #    MAPPGridState(agents=((0, 0), (1, 1), (0, 1), (1, 0)), walls=frozenset(), nrows=5, ncols=5)
-    #    )
-    #action object have .source, .target & .cost variables
+    # it returns a list of tuples with ( Action, State )
+    # ( action, state ) = start_state.successors()[0]
+    #action object have .source, .target & .cost variables -- source and target are not types of State
     #states have .agents (???), walls (???), .nrows & .ncols -- any of whichs should not be concerns
-    ( act, stat ) = start_state.successors()[0]
-    print(act.source)
-    
+    #action.source and action.target might be comparable to state.agents but eh...
 
-    #prio function needs to be written
-    Q.put( (2, stat ) )
-    Q.put( (1, start_state ) )
+    best = float('inf')
+    goalState = None
 
-    print('Q.get #1')
-    print( Q.get() ) #Lets assume this pops the one with lowest prio, myth confirmed
-    print('Q.get #2')
-    print( Q.get() ) #freezes the program when nothing in queue
 
-    # // The set of discovered nodes that may need to be (re-)expanded.
-    # // Initially, only the start node is known.
-    # // This is usually implemented as a min-heap or priority queue rather than a hash-set.
-    # openSet := {start} 
-    'openSet == Q'
-
-    # // For node n, cameFrom[n] is the node immediately preceding it on the cheapest path from start
-    # // to n currently known.
-    # cameFrom := an empty map
-    'cameFrom == predecessor' #is it a single object only? no its a map for all of them
-
-    # // For node n, gScore[n] is the cost of the cheapest path from start to n currently known.
-    # gScore := map with default value of Infinity
-    # gScore[start] := 0
-    'gScore == g'
-
-    # // For node n, fScore[n] := gScore[n] + h(n). fScore[n] represents our current best guess as to
-    # // how cheap a path could be from start to finish if it goes through n.
-    # fScore := map with default value of Infinity
-    # fScore[start] := h(start)
-    f = {}
-    'fScore == f'
-
-    'before starting, need to add starting state to priotity ques and give it g of its own cost'
-    'maybe also f'
-
+    #Put starting state to the Queue with 0 prio
+    Q.put( (0, start_state) )
+    #Give the start sate a g 0 incase we test it
+    g[start_state] = 0
 
     # while openSet is not empty
     while not Q.empty():
-    #     // This operation can occur in O(Log(N)) time if openSet is a min-heap or a priority queue
-    #     current := the node in openSet having the lowest fScore[] value
-        current = Q.get()
-    #     if current = goal
-    #         return reconstruct_path(cameFrom, current)
-        if goaltest( current ):
-            return [] #need  to implement reconstruct path
+        #Pop the state with lowest f (it gets deleted from the queue)
+        currentPrio, current = Q.get()
 
-    #     openSet.Remove(current) 
-        'happens automatically bc priorityque'
-    #     for each neighbor of current
-        for action, neigbor in current.successors():
-    #         // d(current,neighbor) is the weight of the edge from current to neighbor
-    #         // tentative_gScore is the distance from start to the neighbor through current
-    #         tentative_gScore := gScore[current] + d(current, neighbor)
-            'action cost is the distance in this situation'
-            tempG = g[current] + action.cost
-    #         if tentative_gScore < gScore[neighbor]
-    #             // This path to neighbor is better than any previous one. Record it!
-    #             cameFrom[neighbor] := current
-    #             gScore[neighbor] := tentative_gScore
-    #             fScore[neighbor] := tentative_gScore + h(neighbor)
-            'this solution plays with the assumption that only better solutions are added to the priority que and not all of them'
-    #             if neighbor not in openSet
-    #                 openSet.add(neighbor)
+        #Check if in the goal
+        if currentPrio >= best:
+            return reconstructPath(goalState, predecessor, cameFrom)
+
+        #Add neighbor states to the Q
+        for action, neighbor in current.successors():
+            #should propabl do some if here to not loop around
+            #only do this if the g
+            neighbor_g = g[current] + action.cost
+
+            if goaltest(neighbor) and neighbor_g < best:
+                best = neighbor_g
+                goalState = neighbor
+
+            if not neighbor in g.keys(): # or neighbor_g < best:
+                #the action needs to be saved for the path reconstruction
+                predecessor[neighbor] = current
+                cameFrom[neighbor] = action
+                g[neighbor] = neighbor_g
+                f_score = neighbor_g + h(neighbor)
+                Q.put( (f_score, neighbor) )
 
     # // Open set is empty but goal was never reached
-    # return failure
+    return []
 
-
+def reconstructPath(goalState, predecessor, cameFrom):
+    #action object have .source, .target & .cost variables
+    actionList = []
+    nextState = goalState
+    while nextState in predecessor.keys():
+        actionList.insert(0, cameFrom[nextState] )
+        nextState = predecessor[nextState]
+    return actionList
 
 if __name__ == "__main__":
     # A few basic examples/tests.
