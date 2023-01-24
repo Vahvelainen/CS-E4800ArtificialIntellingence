@@ -72,9 +72,6 @@ def astar(start_state, goaltest, h):
     #states have .agents (???), walls (???), .nrows & .ncols -- any of whichs should not be concerns
     #action.source and action.target might be comparable to state.agents but eh...
 
-    best = float('inf')
-    goalState = None
-
 
     #Put starting state to the Queue with 0 prio
     Q.put( (0, start_state) )
@@ -87,24 +84,23 @@ def astar(start_state, goaltest, h):
         currentPrio, current = Q.get()
 
         #Check if in the goal
-        if currentPrio >= best:
-            return reconstructPath(goalState, predecessor, cameFrom)
+        if goaltest(current):
+            #The f is lowest also so this is the best route
+            return reconstructPath(current, predecessor, cameFrom)
 
         #Add neighbor states to the Q
         for action, neighbor in current.successors():
-            #should propabl do some if here to not loop around
             #only do this if the g
             neighbor_g = g[current] + action.cost
 
-            if goaltest(neighbor) and neighbor_g < best:
-                best = neighbor_g
-                goalState = neighbor
-
-            if not neighbor in g.keys(): # or neighbor_g < best:
+            #Only save if new or the g is better (better route)
+            if not neighbor in g.keys() or neighbor_g < g[neighbor]:
                 #the action needs to be saved for the path reconstruction
                 predecessor[neighbor] = current
                 cameFrom[neighbor] = action
+                #save the g
                 g[neighbor] = neighbor_g
+                #f score is the neighbours priority
                 f_score = neighbor_g + h(neighbor)
                 Q.put( (f_score, neighbor) )
 
