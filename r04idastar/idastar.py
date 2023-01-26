@@ -48,18 +48,39 @@ def doDFS(s,g,bound,goaltest,h,path):
     totalcalls = totalcalls + 1
     if totalcalls > 10000000:
         return None
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
-### Write your code here
+
+    # f := g + h(s);
+    f = g + h(s)
+    # if f > bound then return f;
+    if f > bound:
+        return f
+    # if s is a goal state then return SOLVED;
+    if goaltest(s):
+        #return the start of the plan
+        return [] 
+    # min := ∞;
+    min = float('inf')
+    # for each successor s′ of s do
+    for action, neighbor in s.successors():
+        #f’ := doDFS(s’,g + cost(s,s’),bound);
+
+        #check looping and ignore if s' in path
+        #if not neighbor in path: #WTHF WHY IS THIS RUINIGN IT!!??
+
+        #keep track of path
+        path.append(neighbor)
+        f_neighbor = doDFS(neighbor, g + action.cost, bound , goaltest, h, path)
+        # if f’ = SOLVED then return SOLVED;
+        if isinstance(f_neighbor, list):
+            #reconstruct the path in the way
+            f_neighbor.insert(0, action)
+            return f_neighbor
+        #if f’ < min then min := f’;
+        if f_neighbor < min:
+            min = f_neighbor
+    #end, return min;
+    return min
+
 
 ### NOTE: The grader will call both IDAstar and doDFS, so keep
 ### the interfaces to these intact. (We need to check doDFS
