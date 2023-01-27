@@ -62,22 +62,22 @@ def doDFS(s,g,bound,goaltest,h,path):
     min = float('inf')
     # for each successor s′ of s do
     for action, neighbor in s.successors():
-        #f’ := doDFS(s’,g + cost(s,s’),bound);
-
         #check looping and ignore if s' in path
-        #if not neighbor in path: #WTHF WHY IS THIS RUINIGN IT!!??
-
-        #keep track of path
-        path.append(neighbor)
-        f_neighbor = doDFS(neighbor, g + action.cost, bound , goaltest, h, path)
-        # if f’ = SOLVED then return SOLVED;
-        if isinstance(f_neighbor, list):
-            #reconstruct the path in the way
-            f_neighbor.insert(0, action)
-            return f_neighbor
-        #if f’ < min then min := f’;
-        if f_neighbor < min:
-            min = f_neighbor
+        if not neighbor in path: 
+            #keep track of path
+            new_path = path.copy()
+            new_path.append(neighbor)
+            #f’ := doDFS(s’,g + cost(s,s’),bound);
+            g_neighbor = g + action.cost
+            f_neighbor = doDFS(neighbor, g_neighbor, bound , goaltest, h, new_path)
+            # if f’ = SOLVED then return SOLVED;
+            if isinstance(f_neighbor, list):
+                #reconstruct the path in the way
+                f_neighbor.insert(0, action)
+                return f_neighbor
+            #if f’ < min then min := f’;
+            if not f_neighbor == None and f_neighbor < min:
+                min = f_neighbor
     #end, return min;
     return min
 
