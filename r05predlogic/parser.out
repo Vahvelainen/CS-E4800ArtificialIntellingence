@@ -1,0 +1,765 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> spec
+Rule 1     spec -> <empty>
+Rule 2     spec -> boolexpr spec
+Rule 3     boolexpr -> FORALL ID boolexpr
+Rule 4     boolexpr -> EXISTS ID boolexpr
+Rule 5     boolexpr -> boolexpr AND boolexpr
+Rule 6     boolexpr -> boolexpr OR boolexpr
+Rule 7     boolexpr -> boolexpr IMPLIES boolexpr
+Rule 8     boolexpr -> boolexpr EQVI boolexpr
+Rule 9     boolexpr -> NOT boolexpr
+Rule 10    boolexpr -> term EQ term
+Rule 11    boolexpr -> term NEQ term
+Rule 12    boolexpr -> atom
+Rule 13    boolexpr -> LPAREN boolexpr RPAREN
+Rule 14    termlist -> term COMMA termlist
+Rule 15    termlist -> term
+Rule 16    term -> ID
+Rule 17    atom -> ID LPAREN termlist RPAREN
+
+Terminals, with rules where they appear
+
+AND                  : 5
+COMMA                : 14
+EQ                   : 10
+EQVI                 : 8
+EXISTS               : 4
+FORALL               : 3
+ID                   : 3 4 16 17
+IMPLIES              : 7
+LPAREN               : 13 17
+NEQ                  : 11
+NOT                  : 9
+OR                   : 6
+RPAREN               : 13 17
+error                : 
+
+Nonterminals, with rules where they appear
+
+atom                 : 12
+boolexpr             : 2 3 4 5 5 6 6 7 7 8 8 9 13
+spec                 : 2 0
+term                 : 10 10 11 11 14 15
+termlist             : 14 17
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . spec
+    (1) spec -> .
+    (2) spec -> . boolexpr spec
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    $end            reduce using rule 1 (spec -> .)
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    spec                           shift and go to state 1
+    boolexpr                       shift and go to state 2
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 1
+
+    (0) S' -> spec .
+
+
+
+state 2
+
+    (2) spec -> boolexpr . spec
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+    (1) spec -> .
+    (2) spec -> . boolexpr spec
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    AND             shift and go to state 11
+    OR              shift and go to state 12
+    IMPLIES         shift and go to state 13
+    EQVI            shift and go to state 14
+    $end            reduce using rule 1 (spec -> .)
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 2
+    spec                           shift and go to state 10
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 3
+
+    (3) boolexpr -> FORALL . ID boolexpr
+
+    ID              shift and go to state 15
+
+
+state 4
+
+    (16) term -> ID .
+    (17) atom -> ID . LPAREN termlist RPAREN
+
+    EQ              reduce using rule 16 (term -> ID .)
+    NEQ             reduce using rule 16 (term -> ID .)
+    LPAREN          shift and go to state 16
+
+
+state 5
+
+    (4) boolexpr -> EXISTS . ID boolexpr
+
+    ID              shift and go to state 17
+
+
+state 6
+
+    (9) boolexpr -> NOT . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 18
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 7
+
+    (10) boolexpr -> term . EQ term
+    (11) boolexpr -> term . NEQ term
+
+    EQ              shift and go to state 19
+    NEQ             shift and go to state 20
+
+
+state 8
+
+    (12) boolexpr -> atom .
+
+    AND             reduce using rule 12 (boolexpr -> atom .)
+    OR              reduce using rule 12 (boolexpr -> atom .)
+    IMPLIES         reduce using rule 12 (boolexpr -> atom .)
+    EQVI            reduce using rule 12 (boolexpr -> atom .)
+    FORALL          reduce using rule 12 (boolexpr -> atom .)
+    EXISTS          reduce using rule 12 (boolexpr -> atom .)
+    NOT             reduce using rule 12 (boolexpr -> atom .)
+    LPAREN          reduce using rule 12 (boolexpr -> atom .)
+    ID              reduce using rule 12 (boolexpr -> atom .)
+    $end            reduce using rule 12 (boolexpr -> atom .)
+    RPAREN          reduce using rule 12 (boolexpr -> atom .)
+
+
+state 9
+
+    (13) boolexpr -> LPAREN . boolexpr RPAREN
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 21
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 10
+
+    (2) spec -> boolexpr spec .
+
+    $end            reduce using rule 2 (spec -> boolexpr spec .)
+
+
+state 11
+
+    (5) boolexpr -> boolexpr AND . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 22
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 12
+
+    (6) boolexpr -> boolexpr OR . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 23
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 13
+
+    (7) boolexpr -> boolexpr IMPLIES . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 24
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 14
+
+    (8) boolexpr -> boolexpr EQVI . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 25
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 15
+
+    (3) boolexpr -> FORALL ID . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 26
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 16
+
+    (17) atom -> ID LPAREN . termlist RPAREN
+    (14) termlist -> . term COMMA termlist
+    (15) termlist -> . term
+    (16) term -> . ID
+
+    ID              shift and go to state 27
+
+    termlist                       shift and go to state 28
+    term                           shift and go to state 29
+
+state 17
+
+    (4) boolexpr -> EXISTS ID . boolexpr
+    (3) boolexpr -> . FORALL ID boolexpr
+    (4) boolexpr -> . EXISTS ID boolexpr
+    (5) boolexpr -> . boolexpr AND boolexpr
+    (6) boolexpr -> . boolexpr OR boolexpr
+    (7) boolexpr -> . boolexpr IMPLIES boolexpr
+    (8) boolexpr -> . boolexpr EQVI boolexpr
+    (9) boolexpr -> . NOT boolexpr
+    (10) boolexpr -> . term EQ term
+    (11) boolexpr -> . term NEQ term
+    (12) boolexpr -> . atom
+    (13) boolexpr -> . LPAREN boolexpr RPAREN
+    (16) term -> . ID
+    (17) atom -> . ID LPAREN termlist RPAREN
+
+    FORALL          shift and go to state 3
+    EXISTS          shift and go to state 5
+    NOT             shift and go to state 6
+    LPAREN          shift and go to state 9
+    ID              shift and go to state 4
+
+    boolexpr                       shift and go to state 30
+    term                           shift and go to state 7
+    atom                           shift and go to state 8
+
+state 18
+
+    (9) boolexpr -> NOT boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+    AND             reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    OR              reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    IMPLIES         reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    EQVI            reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    FORALL          reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    EXISTS          reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    NOT             reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    LPAREN          reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    ID              reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    $end            reduce using rule 9 (boolexpr -> NOT boolexpr .)
+    RPAREN          reduce using rule 9 (boolexpr -> NOT boolexpr .)
+
+  ! AND             [ shift and go to state 11 ]
+  ! OR              [ shift and go to state 12 ]
+  ! IMPLIES         [ shift and go to state 13 ]
+  ! EQVI            [ shift and go to state 14 ]
+
+
+state 19
+
+    (10) boolexpr -> term EQ . term
+    (16) term -> . ID
+
+    ID              shift and go to state 27
+
+    term                           shift and go to state 31
+
+state 20
+
+    (11) boolexpr -> term NEQ . term
+    (16) term -> . ID
+
+    ID              shift and go to state 27
+
+    term                           shift and go to state 32
+
+state 21
+
+    (13) boolexpr -> LPAREN boolexpr . RPAREN
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+    RPAREN          shift and go to state 33
+    AND             shift and go to state 11
+    OR              shift and go to state 12
+    IMPLIES         shift and go to state 13
+    EQVI            shift and go to state 14
+
+
+state 22
+
+    (5) boolexpr -> boolexpr AND boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+    AND             reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    OR              reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    IMPLIES         reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    EQVI            reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    FORALL          reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    EXISTS          reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    NOT             reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    LPAREN          reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    ID              reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    $end            reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+    RPAREN          reduce using rule 5 (boolexpr -> boolexpr AND boolexpr .)
+
+  ! AND             [ shift and go to state 11 ]
+  ! OR              [ shift and go to state 12 ]
+  ! IMPLIES         [ shift and go to state 13 ]
+  ! EQVI            [ shift and go to state 14 ]
+
+
+state 23
+
+    (6) boolexpr -> boolexpr OR boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+    AND             reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    OR              reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    IMPLIES         reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    EQVI            reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    FORALL          reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    EXISTS          reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    NOT             reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    LPAREN          reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    ID              reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    $end            reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+    RPAREN          reduce using rule 6 (boolexpr -> boolexpr OR boolexpr .)
+
+  ! AND             [ shift and go to state 11 ]
+  ! OR              [ shift and go to state 12 ]
+  ! IMPLIES         [ shift and go to state 13 ]
+  ! EQVI            [ shift and go to state 14 ]
+
+
+state 24
+
+    (7) boolexpr -> boolexpr IMPLIES boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+    EQVI            reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    FORALL          reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    EXISTS          reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    NOT             reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    LPAREN          reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    ID              reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    $end            reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    RPAREN          reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .)
+    AND             shift and go to state 11
+    OR              shift and go to state 12
+    IMPLIES         shift and go to state 13
+
+  ! AND             [ reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .) ]
+  ! OR              [ reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .) ]
+  ! IMPLIES         [ reduce using rule 7 (boolexpr -> boolexpr IMPLIES boolexpr .) ]
+  ! EQVI            [ shift and go to state 14 ]
+
+
+state 25
+
+    (8) boolexpr -> boolexpr EQVI boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+    FORALL          reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    EXISTS          reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    NOT             reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    LPAREN          reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    ID              reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    $end            reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    RPAREN          reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .)
+    AND             shift and go to state 11
+    OR              shift and go to state 12
+    IMPLIES         shift and go to state 13
+    EQVI            shift and go to state 14
+
+  ! AND             [ reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .) ]
+  ! OR              [ reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .) ]
+  ! IMPLIES         [ reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .) ]
+  ! EQVI            [ reduce using rule 8 (boolexpr -> boolexpr EQVI boolexpr .) ]
+
+
+state 26
+
+    (3) boolexpr -> FORALL ID boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for IMPLIES resolved as shift
+  ! shift/reduce conflict for EQVI resolved as shift
+    FORALL          reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    EXISTS          reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    NOT             reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    LPAREN          reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    ID              reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    $end            reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    RPAREN          reduce using rule 3 (boolexpr -> FORALL ID boolexpr .)
+    AND             shift and go to state 11
+    OR              shift and go to state 12
+    IMPLIES         shift and go to state 13
+    EQVI            shift and go to state 14
+
+  ! AND             [ reduce using rule 3 (boolexpr -> FORALL ID boolexpr .) ]
+  ! OR              [ reduce using rule 3 (boolexpr -> FORALL ID boolexpr .) ]
+  ! IMPLIES         [ reduce using rule 3 (boolexpr -> FORALL ID boolexpr .) ]
+  ! EQVI            [ reduce using rule 3 (boolexpr -> FORALL ID boolexpr .) ]
+
+
+state 27
+
+    (16) term -> ID .
+
+    COMMA           reduce using rule 16 (term -> ID .)
+    RPAREN          reduce using rule 16 (term -> ID .)
+    AND             reduce using rule 16 (term -> ID .)
+    OR              reduce using rule 16 (term -> ID .)
+    IMPLIES         reduce using rule 16 (term -> ID .)
+    EQVI            reduce using rule 16 (term -> ID .)
+    FORALL          reduce using rule 16 (term -> ID .)
+    EXISTS          reduce using rule 16 (term -> ID .)
+    NOT             reduce using rule 16 (term -> ID .)
+    LPAREN          reduce using rule 16 (term -> ID .)
+    ID              reduce using rule 16 (term -> ID .)
+    $end            reduce using rule 16 (term -> ID .)
+
+
+state 28
+
+    (17) atom -> ID LPAREN termlist . RPAREN
+
+    RPAREN          shift and go to state 34
+
+
+state 29
+
+    (14) termlist -> term . COMMA termlist
+    (15) termlist -> term .
+
+    COMMA           shift and go to state 35
+    RPAREN          reduce using rule 15 (termlist -> term .)
+
+
+state 30
+
+    (4) boolexpr -> EXISTS ID boolexpr .
+    (5) boolexpr -> boolexpr . AND boolexpr
+    (6) boolexpr -> boolexpr . OR boolexpr
+    (7) boolexpr -> boolexpr . IMPLIES boolexpr
+    (8) boolexpr -> boolexpr . EQVI boolexpr
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+  ! shift/reduce conflict for IMPLIES resolved as shift
+  ! shift/reduce conflict for EQVI resolved as shift
+    FORALL          reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    EXISTS          reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    NOT             reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    LPAREN          reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    ID              reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    $end            reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    RPAREN          reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .)
+    AND             shift and go to state 11
+    OR              shift and go to state 12
+    IMPLIES         shift and go to state 13
+    EQVI            shift and go to state 14
+
+  ! AND             [ reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .) ]
+  ! OR              [ reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .) ]
+  ! IMPLIES         [ reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .) ]
+  ! EQVI            [ reduce using rule 4 (boolexpr -> EXISTS ID boolexpr .) ]
+
+
+state 31
+
+    (10) boolexpr -> term EQ term .
+
+    AND             reduce using rule 10 (boolexpr -> term EQ term .)
+    OR              reduce using rule 10 (boolexpr -> term EQ term .)
+    IMPLIES         reduce using rule 10 (boolexpr -> term EQ term .)
+    EQVI            reduce using rule 10 (boolexpr -> term EQ term .)
+    FORALL          reduce using rule 10 (boolexpr -> term EQ term .)
+    EXISTS          reduce using rule 10 (boolexpr -> term EQ term .)
+    NOT             reduce using rule 10 (boolexpr -> term EQ term .)
+    LPAREN          reduce using rule 10 (boolexpr -> term EQ term .)
+    ID              reduce using rule 10 (boolexpr -> term EQ term .)
+    $end            reduce using rule 10 (boolexpr -> term EQ term .)
+    RPAREN          reduce using rule 10 (boolexpr -> term EQ term .)
+
+
+state 32
+
+    (11) boolexpr -> term NEQ term .
+
+    AND             reduce using rule 11 (boolexpr -> term NEQ term .)
+    OR              reduce using rule 11 (boolexpr -> term NEQ term .)
+    IMPLIES         reduce using rule 11 (boolexpr -> term NEQ term .)
+    EQVI            reduce using rule 11 (boolexpr -> term NEQ term .)
+    FORALL          reduce using rule 11 (boolexpr -> term NEQ term .)
+    EXISTS          reduce using rule 11 (boolexpr -> term NEQ term .)
+    NOT             reduce using rule 11 (boolexpr -> term NEQ term .)
+    LPAREN          reduce using rule 11 (boolexpr -> term NEQ term .)
+    ID              reduce using rule 11 (boolexpr -> term NEQ term .)
+    $end            reduce using rule 11 (boolexpr -> term NEQ term .)
+    RPAREN          reduce using rule 11 (boolexpr -> term NEQ term .)
+
+
+state 33
+
+    (13) boolexpr -> LPAREN boolexpr RPAREN .
+
+    AND             reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    OR              reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    IMPLIES         reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    EQVI            reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    FORALL          reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    EXISTS          reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    NOT             reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    LPAREN          reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    ID              reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    $end            reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+    RPAREN          reduce using rule 13 (boolexpr -> LPAREN boolexpr RPAREN .)
+
+
+state 34
+
+    (17) atom -> ID LPAREN termlist RPAREN .
+
+    AND             reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    OR              reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    IMPLIES         reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    EQVI            reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    FORALL          reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    EXISTS          reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    NOT             reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    LPAREN          reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    ID              reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    $end            reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+    RPAREN          reduce using rule 17 (atom -> ID LPAREN termlist RPAREN .)
+
+
+state 35
+
+    (14) termlist -> term COMMA . termlist
+    (14) termlist -> . term COMMA termlist
+    (15) termlist -> . term
+    (16) term -> . ID
+
+    ID              shift and go to state 27
+
+    term                           shift and go to state 29
+    termlist                       shift and go to state 36
+
+state 36
+
+    (14) termlist -> term COMMA termlist .
+
+    RPAREN          reduce using rule 14 (termlist -> term COMMA termlist .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for AND in state 26 resolved as shift
+WARNING: shift/reduce conflict for OR in state 26 resolved as shift
+WARNING: shift/reduce conflict for IMPLIES in state 26 resolved as shift
+WARNING: shift/reduce conflict for EQVI in state 26 resolved as shift
+WARNING: shift/reduce conflict for AND in state 30 resolved as shift
+WARNING: shift/reduce conflict for OR in state 30 resolved as shift
+WARNING: shift/reduce conflict for IMPLIES in state 30 resolved as shift
+WARNING: shift/reduce conflict for EQVI in state 30 resolved as shift

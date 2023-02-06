@@ -14,3 +14,9 @@ Please also read all the code.
   stparse.py     Read a file that contains one structure
   prparse.py     Read a file that contains formulas
   predeval.py    Main program for evaluating formulas in a given structure
+
+cd r05predlogic
+python3 predeval.py STRUCT-1 FORMULAS-1
+
+python3 predeval.py STRUCT-2-T FORMULAS-2
+python3 predeval.py STRUCT-2-F FORMULAS-2

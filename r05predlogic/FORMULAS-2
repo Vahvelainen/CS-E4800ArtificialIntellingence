@@ -7,29 +7,34 @@
 # Formula 1
 #
 # Requirement: use predicates likes, happy
-#
+# Everyone is either happy or liked by someone
+forall x (  happy(x) or exists y ( likes(y,x) )  )
 
 #
 # Formula 2
 #
 # Requirement: use predicates happy, calm
-#
+# Everyone is either happy or calm
+forall x (  happy(x) or calm(x)  )
 
 #
 # Formula 3
 #
 # Requirement: use predicates calm, owesmoneyto 
-#
+# There is no-one who is calm and owns money to someone
+not exists x ( calm(x) & exists y ( owesmoneyto(x,y) ))
 
 #
 # Formula 4
 #
 # Requirement: use predicates hasmuchmoremoney, happy
-#
+# There isnt anone who has more money and is happy
+not exists x ( happy(x) & exists y ( hasmuchmoremoney(x,y) ))
 
 #
 # Formula 5
 #
 # Requirement: use predicates hasmuchmoremoney, likes
-#
+# Some likes some who has much more money
+exists x exists y (likes(x,y) & hasmuchmoremoney(y,x))
 
