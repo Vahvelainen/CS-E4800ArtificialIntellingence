@@ -88,7 +88,8 @@ class ATOM:
     # print ( str(self) in v)
     # maybe use vars and some python iteration functions instead of srt(self)
     # print(self.vars()) should propably use dis and not str()
-    return all(i in v for i in self.vars()) #dis wrks, no idea should this be all or any but all sees to work
+    #return all(i in v for i in self.vars()) #dis wrks, no idea should this be all or any but all sees to work
+    return self.name in v #okay this has to be it
 ### IMPLEMENT THIS (~ 1 line)
 
 # FALSE - the constant that represents the truth-value False
