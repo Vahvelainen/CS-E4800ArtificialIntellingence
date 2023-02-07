@@ -106,9 +106,9 @@ def unit_propagation(valuation, clauses):
     # 2. You can use the most simple version of the unit propagation procedure;
     #    its pseudocode is provided in the course materials.
 
-    # print('running unit propagation')
-    # print(valuation) #Dctionary including valutions such as {a: True}
-    # print(clauses) # array of array of tuples ('a', True)
+    print('running unit propagation')
+    print(valuation) #Dctionary including valutions such as {a: True}
+    print(clauses) # array of array of tuples ('a', True)
     # input('press enter to continue')
 
     valuation = valuation.copy()
@@ -133,31 +133,41 @@ def unit_propagation(valuation, clauses):
                     newClause.append( (literal, truthValue) )
             # if only one literal left, it is added to the valuation and clause is not kept
             if len(newClause) == 1:
-                improving = True
                 literal, truthValue = newClause[0]
-                valuation[literal] = truthValue
-                keepClause = False
+                if not literal in valuation: #this might add literals that are not yet decided
+                    valuation[literal] = truthValue
+                    improving = True
+                    keepClause = False
+                
             #Othervise clause is unchanged
-            if keepClause and len(newClause):
+            if keepClause:
                 newClauses.append(newClause)
         #clauses go around and keep going untill no improvements
         clauses = newClauses
 
     if len(clauses) > 0 :
-        # print('Result: Not satified')
-        # print(clauses)
-        # print(valuation)
-        # input('press enter to continue')
+        print('Result: Not satified')
+        print(clauses)
+        print(valuation)
+        input('press enter to continue')
         return ( False, {} )
     
     #else formula is satisfied 
-    # print('Result: satisfied')
-    # print(valuation)
-    #input('press enter to continue')
+    print('Result: satisfied')
+    print(valuation)
+    input('press enter to continue')
     return ( True, valuation)
         
 
-
+    # Frunning unit propagation
+    # {}
+    # [[('x', False), ('y', True)], [('y', False), ('x', True)], [('x', False)]]
+    # Result: Not satified
+    # [[]]
+    # {'x': False, 'y': True}
+    # press enter to continue
+    # --> would be satisifed with x false, y false?
+    # --> mistake somewhere
 
 
 
