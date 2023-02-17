@@ -141,12 +141,12 @@ def unit_propagation(valuation, clauses):
 
     #If there is a clause where all literals are opposite to valuation, return false
     #they need to be both in valution and opposite
-    satisfiable = True
-    for clause in clauses:
-        if all( literal in valuation and valuation[literal] != truthValue for literal, truthValue in clause ):
-            satisfiable = False
 
-    if not satisfiable:#any( all(  (literal in valuation) and (not valuation[literal] == truthValue) for literal, truthValue in clause) for clause in clauses):
+    if any( 
+            all(
+                (literal in valuation) and (not valuation[literal] == truthValue)
+                for literal, truthValue in clause )
+            for clause in clauses ):
         # print('Result: Not Satisfiable')
         # print(valuation)
         # input('Press enter to continue')
