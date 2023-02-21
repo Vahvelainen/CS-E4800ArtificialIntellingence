@@ -106,70 +106,56 @@ def unit_propagation(valuation, clauses):
     # 2. You can use the most simple version of the unit propagation procedure;
     #    its pseudocode is provided in the course materials.
 
-    print('running unit propagation')
-    print(valuation) #Dctionary including valutions such as {a: True}
-    print(clauses) # array of array of tuples ('a', True)
-    # input('press enter to continue')
+    # print('Running unit propagation')
+    # print(clauses)
 
     valuation = valuation.copy()
     clauses = clauses.copy()
 
-    improving = True
-    while improving:
-        improving = False
-        newClauses = []
+    iterating = True
+    while iterating:
+        iterating = False
         for clause in clauses:
-            newClause = []
-            keepClause = True
+            #Only checking to n-1 does not seem to do the trick for all the cases (a_0: False case)
+            falseCount = 0
+            nonFalseLiteral = None
+            nonFalseLiteralVal = None
+
             for literal, truthValue in clause:
-                if literal in valuation:
-                    improving = True
-                    #Remove clause all together if truthvalue is same as in valution
-                    if truthValue == valuation[literal]:
-                        keepClause = False
-                    #Remove only literal if its complement (by not appending it)
+                if literal in valuation and valuation[literal] != truthValue:
+                    falseCount += 1
                 else:
-                    # Keep literal if not in valuation
-                    newClause.append( (literal, truthValue) )
-            # if only one literal left, it is added to the valuation and clause is not kept
-            if len(newClause) == 1:
-                literal, truthValue = newClause[0]
-                if not literal in valuation: #this might add literals that are not yet decided
-                    valuation[literal] = truthValue
-                    improving = True
-                    keepClause = False
-                
-            #Othervise clause is unchanged
-            if keepClause:
-                newClauses.append(newClause)
-        #clauses go around and keep going untill no improvements
-        clauses = newClauses
+                    nonFalseLiteral = literal
+                    nonFalseLiteralVal = truthValue
 
-    if len(clauses) > 0 :
-        print('Result: Not satified')
-        print(clauses)
-        print(valuation)
-        input('press enter to continue')
+            # If only one non-false it can be added to valuation if not there allready
+            if falseCount == len(clause) - 1 and nonFalseLiteral not in valuation:
+                valuation[nonFalseLiteral] = nonFalseLiteralVal
+                iterating = True
+
+            # if all( literal in valuation and valuation[literal] != truthValue for literal, truthValue in clause[ : -1 ] ):
+            #     literal, truthValue = clause[ -1]
+            #     if literal not in valuation:
+            #         valuation[literal] = truthValue
+            #         iterating = True
+
+    #If there is a clause where all literals are opposite to valuation, return false
+    #they need to be both in valution and opposite
+
+    if any( 
+            all(
+                (literal in valuation) and (not valuation[literal] == truthValue)
+                for literal, truthValue in clause )
+            for clause in clauses ):
+        # print('Result: Not Satisfiable')
+        # print(valuation)
+        # input('Press enter to continue')
         return ( False, {} )
-    
-    #else formula is satisfied 
-    print('Result: satisfied')
-    print(valuation)
-    input('press enter to continue')
-    return ( True, valuation)
-        
-
-    # Frunning unit propagation
-    # {}
-    # [[('x', False), ('y', True)], [('y', False), ('x', True)], [('x', False)]]
-    # Result: Not satified
-    # [[]]
-    # {'x': False, 'y': True}
-    # press enter to continue
-    # --> would be satisifed with x false, y false?
-    # --> mistake somewhere
-
-
+    else:
+        # print('Result: Satisfiable')
+        # print(valuation)
+        # input('Press enter to continue')
+        return ( True, valuation)
 
 
 
@@ -246,3 +232,36 @@ def dpll(valuation, clauses, variables):
     # =====
     # Satisfiability testing can be done by updating the `valuation` dictionary
     # and recursively calling the `dpll` function.
+
+    # print('branching variable:')
+    # print(branching_variable)
+    # print(type(branching_variable))
+    # print(clauses)
+
+    # input('Press Enter to continue')
+
+    for value in [True, False]:
+        new_valuation = valuation.copy()
+        new_valuation[branching_variable] = value  #( ( branching_variable, True ) )
+        isTrue, new_valuation = dpll(new_valuation, clauses, variables)
+        if isTrue:
+            return (True, new_valuation)
+
+    # The formula is unsatisfiable
+    return (False, {})    
+
+if __name__ == "__main__":
+    print('main')
+    input('press enter to continue')
+    clauses = [[('n', False), ('o', False), ('e', True)], [('h', False), ('m', True), ('h', False)], [('o', True), ('i', False), ('c', True)], [('j', True), ('o', True), ('l', True)], [('o', False), ('b', True), ('o', True)], [('f', False), ('b', False), ('f', True)], [('o', False), ('i', False), ('n', True)], [('a', True), ('i', True), ('b', True)], [('g', True), ('m', True), ('a', True)], [('n', True), ('d', True), ('l', True)], [('d', True), ('d', False), ('c', True)], [('h', False), ('f', True), ('o', False)], [('e', True), ('l', False), ('f', True)], [('i', False), ('m', True), ('j', False)], [('b', True), ('g', False), ('d', False)], [('d', True), ('a', True), ('k', False)], [('b', False), ('m', False), ('c', True)], [('n', False), ('l', True), ('i', True)], [('n', True), ('e', True), ('d', True)], [('o', True), ('n', True), ('j', False)], [('h', True), ('l', True), ('m', False)], [('f', True), ('h', True), ('f', True)], [('d', False), ('e', False), ('d', False)], [('c', False), ('n', False), ('m', False)], [('l', False), ('n', True), ('o', True)], [('j', True), ('a', False), ('d', True)], [('j', False), ('b', False), ('b', False)], [('a', False), ('c', True), ('h', False)], [('m', False), ('k', False), ('g', True)], [('n', False), ('d', False), ('e', False)], [('c', False), ('h', False), ('b', True)], [('g', False), ('f', True), ('h', True)], [('o', True), ('l', True), ('m', False)], [('k', False), ('c', False), ('e', False)], [('o', False), ('c', False), ('k', False)], [('j', True), ('o', False), ('f', False)], [('k', False), ('i', True), ('h', True)], [('f', True), ('i', False), ('d', True)], [('h', False), ('e', True), ('j', True)], [('k', True), ('c', True), ('g', True)], [('n', True), ('a', True), ('l', False)], [('d', False), ('h', False), ('o', True)], [('n', False), ('g', True), ('j', False)], [('k', True), ('c', False), ('e', True)], [('h', True), ('h', True), ('j', True)], [('o', False), ('f', False), ('h', False)], [('n', True), ('m', False), ('i', True)], [('k', True), ('n', True), ('a', False)], [('k', False), ('a', False), ('l', True)], [('n', True), ('j', False), ('b', True)], [('d', True), ('e', True), ('c', False)], [('n', True), ('k', False), ('e', True)], [('m', True), ('n', False), ('k', True)], [('k', True), ('b', True), ('e', True)], [('a', False), ('k', False), ('f', True)], [('j', True), ('a', True), ('l', True)], [('h', True), ('o', False), ('g', False)], [('i', False), ('g', True), ('a', False)], [('e', False), ('m', False), ('b', False)], [('j', False), ('e', False), ('j', False)], [('g', True), ('c', False), ('h', True)], [('o', False), ('c', True), ('l', False)], [('g', True), ('e', False), ('b', True)], [('h', False), ('n', True), ('m', False)], [('h', False), ('h', False), ('e', False)], [('k', True), ('o', False), ('j', False)], [('k', False), ('m', False), ('l', False)], [('g', False), ('g', True), ('e', False)], [('h', True), ('l', True), ('g', False)], [('d', True), ('e', True), ('c', False)], [('f', False), ('n', True), ('l', False)], [('i', False), ('k', False), ('h', False)], [('d', True), ('m', False), ('c', False)], [('h', False), ('i', True), ('b', True)], [('h', False), ('g', True), ('g', True)]]
+    valuation = {}
+    print(unit_propagation(valuation, clauses))
+    
+    clauses = [[('a', True), ('b', True)]]
+    valuation = {'a': True}
+    print(unit_propagation(valuation, clauses))
+    clauses = [[('a', True), ('b', True)]]
+    valuation = {}
+    print(unit_propagation({}, clauses))
+    #Should result in ture but empty valuation
+
