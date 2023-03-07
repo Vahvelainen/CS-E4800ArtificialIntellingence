@@ -1,0 +1,14 @@
+
+
+
+python3 translate.py INFERENCE1 CONSEQ1.TPTP
+perl GKC CONSEQ1.TPTP
+
+python3 translate.py INFERENCE2 CONSEQ2.TPTP
+perl GKC CONSEQ2.TPTP
+
+python3 translate.py INFERENCE3 CONSEQ3.TPTP
+perl GKC CONSEQ3.TPTP
+
+python3 translate.py INFERENCE4 CONSEQ4.TPTP
+perl GKC CONSEQ4.TPTP
