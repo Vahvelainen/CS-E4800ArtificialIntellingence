@@ -65,7 +65,29 @@ def get_conditional_probability(data, query, condititions):
     #  - you can use get_data_frequency(..) 
     # =========================================================
     # CODE HERE! DON'T FORGET TO RETURN SOMETHING ELSE THAN 0!
-    return 0
+
+   #data
+
+   # N x D, N = node, d = occurence? must be
+   # [[1. 1. 1. ... 1. 0. 0.]
+   # [1. 1. 1. ... 1. 0. 0.]
+   # [1. 0. 1. ... 1. 0. 0.]
+   # ...
+   # [1. 0. 1. ... 0. 0. 0.]
+   # [1. 0. 1. ... 0. 0. 0.]
+   # [1. 1. 1. ... 0. 0. 0.]]
+
+   #  print(len(data[0])) #25
+   #  print(len(data)) #1806
+
+    # can just sum the occurences where conditions to calculate propability of query?
+    # numbpy might have better ways byt asdf I dont know them
+    # check waht get_data_frequency(..) does - might help
+
+    conditions_count = get_data_frequency(data, condititions)
+    true_count = get_data_frequency(data, combined_dictionary)
+    return true_count / ( conditions_count + epsilon ) #tf is epsilon for lol I dont understand
+
     # =========================================================
 
 # Construct a CPT based on query and list of conditional variables
@@ -96,6 +118,11 @@ def construct_probability_table(data, query, conditions):
     
     # List of all ways for assigning binary numbers to the conditions
     assignments = list(itertools.product([0, 1], repeat=len(conditions)))
+
+   #  print("Running construct_probability_table")
+   #  print(conditions)
+   #  print(assignments)
+   #  input("Press enter to continue...")
     
     # Loop over all assignments of binary variables
     for assignment in assignments:
@@ -117,6 +144,8 @@ def construct_probability_table(data, query, conditions):
         # =========================================================
         # CODE HERE! Don't forget to update `result` dictionary!
         # =========================================================
+
+        result.update({dict_key: get_conditional_probability(data, {query: 1}, B)})
     return result
 
 # Evaluate probability P(query = val | conditions)
@@ -232,6 +261,11 @@ def exhaustive_enum(G, X, E, e):
             # =========================================================
             # CODE HERE!
             # =========================================================
+
+            node_id = node.data_id
+            node_val = combined_dictionary[node_id]
+            tmp = tmp * evaluate_node(G, node_id, node_val, combined_dictionary)
+        total += tmp
     return total
 
 # Calculate distribution P(targets | e) by brute force search over the hidden variables y
@@ -301,6 +335,11 @@ def sample(G, X, E, e):
     # Algorithm Sample(..) in the MyCourses material.
     for variable in X:
         parents = dict(zip(variables, assignment))
+        # keep track of variables
+        variables.append(variable)
+        # node propability with current assigments
+        propability = G.get_node_probability(variable, parents)
+
             # =========================================================
             # TASK 2.2: complete the algorithm as in algorithm SAMPLE(..) in the MyCourses material.
             #
@@ -327,10 +366,20 @@ def sample(G, X, E, e):
             # =========================================================
             # CODE HERE
             # =========================================================
+            if value:
+                  w = w * propability
+            else:
+                  w = w * (1 - propability)
         else:
+            if numpy.random.random() < propability:
+               value = 1
+            else:
+               value = 0
+            #value = int(numpy.ceil( propability - numpy.random.random_sample() ))
             # =========================================================
             # CODE HERE
             # =========================================================
+        assignment.append(value)
     return assignment, w
 
 # Approximate a joint distribution of targets

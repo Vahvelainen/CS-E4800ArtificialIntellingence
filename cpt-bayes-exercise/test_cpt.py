@@ -17,7 +17,7 @@ class TestCPT(unittest.TestCase):
    
     def setUp(self):
         # Load data
-        filename = "data/hs.txt"
+        filename = "./data/hs.txt"
         self.data = np.loadtxt(filename, delimiter=" ")
         # Construct same bayesian network
         network = Network(self.data)

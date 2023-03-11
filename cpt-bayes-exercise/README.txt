@@ -2,6 +2,9 @@ Computing Conditional Probabilities & Reasoning with Bayesian Networks
 ----------------------------------------------------------------------
 In this exercise you will write some code to estimate CPTs and also to evaluate queries given variable dependencies given as Bayesian Networks.
 
+cd cpt-bayes-exercise
+python3 test_cpt.py
+
 Instructions
 ^^^^^^^^^^^^
 1. The python package numpy (https://numpy.org/) is needed for this exercise. If it is not already installed on your computer you can install get with `pip install numpy` (or via python distribution managers such as conda/miniconda).
