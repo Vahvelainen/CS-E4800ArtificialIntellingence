@@ -11,8 +11,8 @@ from random_agent import RandomAgent
 from minimax_agent import MinimaxAgent
 from id_minimax_agent import IDMinimaxAgent
 from markov_agent import MarkovAgent
-# from agent import Agent    # After completing your agent, you can uncomment this line
-
+from alphabeta_agent import AlphaBetaAgent 
+from id_alphabeta_agent import IDAlphaBetaAgent 
 
 # If you want the reproducibility uncomment the following line
 # seed(13731367)
@@ -23,9 +23,9 @@ def main():
     ############### Set the players ###############
     # players = [RandomAgent, IDMinimaxAgent]
     # players = [MarkovAgent, RandomAgent]
-    players = [IDMinimaxAgent, MarkovAgent]
+    # players = [IDMinimaxAgent, MarkovAgent]
 
-    # players = [Agent, IDMinimaxAgent]   <-- Uncomment this to test your agent
+    players = [IDAlphaBetaAgent, IDMinimaxAgent]
     ###############################################
 
     RENDER = True

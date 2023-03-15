@@ -57,13 +57,18 @@ Step 2: heuristics
     Test 8: ratio vs. difference. Ratio of all production * 10 - ratio of all ships vs the formula from test 7
             (production_diff * 10) + ship_diff vs. (production_ratio * 10) + ship_ratio
     Result: 41-59 not sure if this is a fluke but we'll go with ratios
+ 
+    Test 9: Heuristic from Test 8 compared to my_ship count (as a sanity check)
+            (production_ratio * 10) + ship_ratio vs. my_ships
+            70 - 30, curiously worse than test 3 ratio, but that test done with full 100 runs gives similar result of very similar 68 - 32
+            implying the nyance between more sophisticated formulas might not be very large in bigger picture
+    
+    Final test: improved heuristic in itereatively deepening alphabeta vs iterativedeepening minimax with shipcount heuristic
+                5 second timeout
+                IDalphabeta (production_ratio * 10) + ship_ratio vs. IDminimax my_ships
+                91 - 9 for the alphabeta with improved heuristic
 
-    Final test: Heuristic from Test 8 compared to my_ship count
-                (production_ratio * 10) + ship_ratio vs. my_ships
-                70 - 30, curiously worse than test 2 ratio, but that test done with full 100 runs gives similar result of very similar 68 - 32
-                implying the nyance between more sophisticated formlas might not be very large in bigger picture
-
-
+    
 Step 3: Heuristic que / continous
         Is using heuristics to que for states better
 
@@ -72,7 +77,7 @@ Step 4: compare to monte carlo methods if time
 """
 
 
-class AlphaBetaAgent2(AgentInterface):
+class AlphaBetaAgent(AgentInterface):
     """
     An agent who plays the Konquest game
 
@@ -130,8 +135,7 @@ class AlphaBetaAgent2(AgentInterface):
         production_ratio = my_production / all_production
         ship_ratio = my_ships / all_ships
 
-        return ( my_production * 10 ) + my_ships
-        #return (production_ratio * 10) + ship_ratio
+        return ( production_ratio * 10 ) + ship_ratio
 
     def decide(self, state: Universe):
         """

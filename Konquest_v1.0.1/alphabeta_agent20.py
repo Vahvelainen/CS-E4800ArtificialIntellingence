@@ -130,8 +130,7 @@ class AlphaBetaAgent2(AgentInterface):
         production_ratio = my_production / all_production
         ship_ratio = my_ships / all_ships
 
-        return ( my_production * 10 ) + my_ships
-        #return (production_ratio * 10) + ship_ratio
+        return (production_ratio * 10) + ship_ratio
 
     def decide(self, state: Universe):
         """
