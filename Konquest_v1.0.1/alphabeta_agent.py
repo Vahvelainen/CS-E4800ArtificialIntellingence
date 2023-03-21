@@ -1,11 +1,22 @@
 import random
-
 from envs.konquest import Universe
 from agent_interface import AgentInterface
-"""
-Step 1: alphabeta
 
-    Action: Implemented alphabeta pruning to provided Minimax
+"""
+Overall concept: Iterative Deepening Alpha Beta - Pruned Minimax with improved heuristics
+Heuristics used (production_ratio * 10) + ship_ratio - based on less-than-scientific testing
+with a script that launched and recorded games in paraller terminals. 
+
+Steps of developement (details below):
+1.) Alphabeta pruning, success
+2.) Improved heuristics, success
+3.) MCTS, fail - didn't beat ID-alphabeta
+4.) Heuristic quing, fail no difference
+
+
+Step 1: AlphaBeta pruning
+
+    Implemented alphabeta pruning to provided Minimax
     Result: Alphabeta seems to be able to do one bit deeper search with similar branching factor and time resource
             branching factor of 16 (starting state):
                 ~ 0.2 second for Alphabeta with depth of 4
@@ -20,7 +31,7 @@ Step 1: alphabeta
         might not be good in defence as there might be less potential for iterations in more complex defensice situations
         alltrough one could argue that its what happens in hopeless situations and good offense is best defence
 
-Step 2: heuristics
+Step 2: Improved heuristics
 
     Setup: Old heuristics vs. New heuristics with alphabeta with depth of 4 and 5second timeout (allows fast games and iteration)
            Earlier runs ran enough to see the difference or lack there of, later runs run 100 games  (10 games paraller) 
@@ -64,19 +75,47 @@ Step 2: heuristics
             implying the nyance between more sophisticated formulas might not be very large in bigger picture
     
     Final test: improved heuristic in itereatively deepening alphabeta vs iterativedeepening minimax with shipcount heuristic
-                5 second timeout
+                5 second timeout, 100 games, switching sides, (run 10-12 threads paraller)
                 IDalphabeta (production_ratio * 10) + ship_ratio vs. IDminimax my_ships
-                91 - 9 for the alphabeta with improved heuristic
+                85 - 15 for the alphabeta with improved heuristic
+                (curiously 91 - 9 with heuristics from test 3)
+    ID-Aplphabeta vs. Montecarlo
+    76 - 24
 
+    15 - 5 per simple ID-Mimax in 1s turns
+    18 -2 to random agent in 2s games
+
+Step 3: Compare to monte carlo methods
+    # First actual succesfull tests with MCTS and Minimax-simple for sanitychecking the algorithm works:
+    # 43 / 7 (of 50), MCTS wins 86% of the time on 4s turns (note: Minimax had fixed depth of four)
+
+    # Test with heuristic vs random paths MCTS
+    # Heuristic lost 7 / 41 (of 48) on 4s turns
+    # I assume tha the extra computation isn't worth it
+
+    # Tinker with the saving & pruning possibility
+    # ie. each state would have scores and successors to correspond and the info would be pruned from previous turn
+    # tinkered -> comparing states not directly possible / too complicated
+
+    # Tested MCTS against ID alphabeta with improved heuristics
+    # 50 games, 2 second turns
+    # 12 / 38 to aplhabeta
+    # 50 games, 4 second turns
+    # 14 / 36 to aplhabeta
+    # MCTS doesn't beat aplhabeta "Ei jatkoon"
     
-Step 3: Heuristic que / continous
-        Is using heuristics to que for states better
-
-Step 4: compare to monte carlo methods if time
+Step 4: Heuristic que / continous
+    - Is using heuristics to que states better
+        -> In theory might get results from "one layer deeper"
+        -> Who knows in practise
+    - Doing heuristic sort resulted in 50/50 result in 2second games, no real benefits.
 
 """
 
+# Iterative deepening class pasted below
+#### USE CLASS " AGENT " FOUND BELOW #####
 
+#AlphaBeta based on Minimax given in material
 class AlphaBetaAgent(AgentInterface):
     """
     An agent who plays the Konquest game
@@ -93,24 +132,7 @@ class AlphaBetaAgent(AgentInterface):
 
     @staticmethod
     def info():
-        """
-        Return the agent's information
-
-        Returns
-        -------
-        Dict[str, str]
-            `agent name` is the agent's name
-            `student name` is the list team members' names
-            `student number` is the list of student numbers of the team members
-        """
-        # -------- Task 1 -------------------------
-        # Please complete the following information
-        # NOTE: Please try to pick a unique name for you agent. If there are
-        #       some duplicate names, we have to change them.
-
-        return {"agent name": "Alpha beta 2.0",  # COMPLETE HERE
-                "student name": ["Leevi Vahvelainen"],  # COMPLETE HERE
-                "student number": ["552956"]}  # COMPLETE HERE
+        return {"agent name": '!!! USE CLASS " AGENT " FOUND IN THE SAME FILE !!!'}
     
     def heuristic(self, state: Universe):
         my_id = state.current_player_id
@@ -145,8 +167,6 @@ class AlphaBetaAgent(AgentInterface):
         successors = state.successors()
 
         # Good ol' rnd suffle for the beginning
-        # -> might be waste of time and will be tried to be picked with heuristics
-        # Might be best use the math theory of sampling few and then picking best after them to limit the time
         random.shuffle(successors)
         best_action, _ = successors[0]
 
@@ -228,3 +248,46 @@ class AlphaBetaAgent(AgentInterface):
             if alpha >= beta:
                 break
         return value
+    
+
+##Iteratively deepening / Copy from given material
+class IterativeDeepening(AgentInterface):
+    def __init__(self, AgentClass, *args, **kwargs):
+        MAX_DEPTH = 100
+        self.__agents = list()
+        for depth in range(1, MAX_DEPTH):
+            self.__agents.append(AgentClass(*args, depth=depth, **kwargs))
+
+    def info(self):
+        return {'agent name': f'ID-{self.__agents[0].info()["agent name"]}'}
+
+    def decide(self, *args, **kwargs):
+        for agent in self.__agents:
+            for decision in agent.decide(*args, **kwargs):
+                yield decision
+
+class Agent(IterativeDeepening):
+    def __init__(self):
+        super().__init__(AgentClass=AlphaBetaAgent)
+
+    @staticmethod
+    def info():
+        """
+        Return the agent's information
+
+        Returns
+        -------
+        Dict[str, str]
+            `agent name` is the agent's name
+            `student name` is the list team members' names
+            `student number` is the list of student numbers of the team members
+        """
+        # -------- Task 1 -------------------------
+        # Please complete the following information
+        # NOTE: Please try to pick a unique name for you agent. If there are
+        #       some duplicate names, we have to change them.
+
+        return {"agent name": "AlphaBeta Peace Producer",  # COMPLETE HERE
+                "student name": ["Leevi Vahvelainen"],  # COMPLETE HERE
+                "student number": ["552956"]}  # COMPLETE HERE
+    
