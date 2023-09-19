@@ -5,10 +5,18 @@ import math
 # Consider the UCB1 formula, which has turned out to be useful in both reinforcement learning and in Monte Carlo methods for computer game playing.
 # We have observed the following state sequences.
 
+# Week 9 exercise
+# sequences = [
+#     [3,3,3,2,2,2,2,1,1,1],
+#     [3,3,2,2],
+#     [4]
+#   ]
+
+# Week 12 exercise
 sequences = [
-    [3,3,3,2,2,2,2,1,1,1],
-    [3,3,2,2],
-    [4]
+    [1,6,4,2,6,4,1],
+    [1,5,9],
+    [6,4,1]
   ]
 
 # The sequence with the highest value obtained with the UCB1 formula will be played next.
